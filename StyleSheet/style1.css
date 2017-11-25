@@ -1,0 +1,32 @@
+
+.scene{
+    -fx-background-color: #333333;
+}
+.button{
+    -fx-background-color: #333333;
+    -fx-border-radius: 5;
+}
+.button:pressed{
+    -fx-background-color: rgba(180,180,180,0.7);
+}
+
+.button:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+.button:focused{
+    -fx-background-color: rgba(205,205,205,0.7);
+}
+
+.vbox,hbox{
+     -fx-background-color: #444444;
+}
+.combobox{
+    -fx-background-color: #333333;
+}
+.combobox:focused{
+    -fx-background-color: rgba(205,205,205,0.7);
+}
+.combobox:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}

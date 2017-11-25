@@ -6,7 +6,12 @@ public class Values {
     public final static double RIGHT_BAR_WIDTH=20;
     public static final double DEFAULT_SCENE_HEIGHT=950;
     public static final double DEFAULT_SCENE_WIDTH=1000;
-    public static final double DEFAULT_NAME_CANVAS_WIDTH=600;
+    public static final double DEFAULT_NAME_CANVAS_WIDTH=400;
     public static final double DEFAULT_TOP_BAR_NODES_HEIGHT=20;
-    public static final double TOP_BOX_SPACING=15;
+    public static final double TOP_BOX_SPACING=0;
+    public static final double POSITION_SLIDER_OFFSET=20;
+    public static final double SIDE_BOX_SPACING=20;
+    public static final double SIDE_BOX_PADDING_TOP_BOTTOM=40;
+    public static final double BUTTON_FIT_WIDTH=24;
+    public static final double BUTTON_FIT_HEIGHT=24;
 }
