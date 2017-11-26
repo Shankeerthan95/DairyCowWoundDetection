@@ -1,6 +1,11 @@
 
 .scene{
     -fx-background-color: #333333;
+
+}
+.imagecanvas{
+    -fx-background-color: #111111;
+
 }
 .button{
     -fx-background-color: #333333;

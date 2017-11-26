@@ -12,6 +12,11 @@ public class Values {
     public static final double POSITION_SLIDER_OFFSET=20;
     public static final double SIDE_BOX_SPACING=20;
     public static final double SIDE_BOX_PADDING_TOP_BOTTOM=40;
-    public static final double BUTTON_FIT_WIDTH=24;
-    public static final double BUTTON_FIT_HEIGHT=24;
+    public static final double SMALL_MENU_DX=10;
+    public static final double SMALL_MENU_DY=150;
+    public static final double SLIDER_DX=460;
+    public static final double SLIDER_DY=210;
+
+    //public static final double BUTTON_FIT_WIDTH=24;
+    //public static final double BUTTON_FIT_HEIGHT=24;
 }
