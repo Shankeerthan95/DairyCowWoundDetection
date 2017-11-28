@@ -1,5 +1,6 @@
 package com.shankeerthan;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -87,23 +89,24 @@ public class Main extends Application {
         imagePositionBox.setMinHeight(Values.IMAGE_POSITION_BOX_HEIGHT);
         designBottomBox(imagePositionBox);
         root.setBottom(imagePositionBox);
-
-        //Top
-        HBox topBox=new HBox();
-        topBox.setMinHeight(Values.TOP_BAR_HEIGHT);
-        designTopBar(topBox);
-        root.setTop(topBox);
-
         //Right
         VBox rightBox =new VBox();
         rightBox.setMinWidth(Values.RIGHT_BAR_WIDTH);
         designRightBox(rightBox);
         root.setRight(rightBox);
+
+        //Top
+        HBox topBox=new HBox();
+        topBox.setMinHeight(Values.TOP_BAR_HEIGHT);
+        designTopBar(topBox,rightBox);
+        root.setTop(topBox);
+
+
     }
     private void styleStage(Stage stage){
         stage.initStyle(StageStyle.DECORATED);
     }
-    private void designTopBar(HBox container){
+    private void designTopBar(HBox container , VBox vBox){
         //Menu button
         Button smallMenuButton =new Button();
         handleSmallMenuButton(smallMenuButton,container);
@@ -152,11 +155,14 @@ public class Main extends Application {
 
         //ShowHide side bar  Button
         Button showSidebarButton =new Button();
+        handleShowBarButton(showSidebarButton , vBox);
         Image showSidebarIcon=new Image("file:"+ "Icons/show_sidebar.png");
         showSidebarButton.setGraphic(new ImageView(showSidebarIcon));
 
+
         //Hide side bar button
         Button hideSidebarButton =new Button();
+        handleHideBarButton(hideSidebarButton,vBox);
         Image hideSidebarImageIcon = new Image("file:"+"Icons/hide_sidebar.png");
         hideSidebarButton.setGraphic(new ImageView(hideSidebarImageIcon));
 
@@ -179,6 +185,9 @@ public class Main extends Application {
         container.getChildren().add(hideSidebarButton);
         container.getChildren().add(aboutUsButton);
     }
+
+
+
     private void designBottomBox(HBox container){
         //It has a slider to show position of current image in particular directory
         Slider positionShower =new Slider();
@@ -362,8 +371,8 @@ public class Main extends Application {
     }
     private void handleTemperatureRange(Button button){
         /*
-        This method handle when buuton is clicked it get low point,high point of temperature scale range
-        and Range of Interest  And  give of choice to user ues whtaever the unit from user
+        This method handle when button is clicked it get low point,high point of temperature scale range
+        and Range of Interest  And  give of choice to user ues what ever the unit from user
         It has default values
         Temperature Scale Range : 25 - 35 degree celcious
         Interest range          :28   -32 degree celcious
@@ -467,5 +476,45 @@ public class Main extends Application {
             }
         });
 
+    }
+
+    private void handleHideBarButton(Button button , VBox vBox){
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("hide");
+                TranslateTransition transition = new TranslateTransition();
+                transition.setDuration(Duration.seconds(2));
+                transition.setNode(vBox);
+                transition.setToX(50);
+                transition.play();
+
+            }
+
+
+
+
+        } );
+
+    }
+
+
+    private void handleShowBarButton(Button button, VBox vBox) {
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Show");
+                TranslateTransition transition = new TranslateTransition();
+                transition.setDuration(Duration.seconds(1));
+                transition.setNode(vBox);
+                transition.setToX(-5);
+                transition.play();
+
+            }
+
+
+
+
+        } );
     }
 }
