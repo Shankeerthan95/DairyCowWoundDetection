@@ -15,10 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -28,7 +31,21 @@ import java.net.MalformedURLException;
 public class Main extends Application {
     private Canvas imageDisplay;
     private Stage stage;
+    private  double scaleTemMax;
+    private double scaleTemMin;
+    private double interestRangeMax;
+    private double interestRangeMin;
+    private int unit;
+    private int colorPallete;
+
     public Main(){
+        scaleTemMax=35;
+        scaleTemMin=25;
+        interestRangeMax=32;
+        interestRangeMin=28;
+        unit=Values.CELSIUS;
+        colorPallete=Values.FUSION;
+
         imageDisplay =new Canvas(); //HAVE TO handle initial size of canvas later point
         imageDisplay.getStyleClass().add("imagecanvas");
     }
@@ -107,14 +124,10 @@ public class Main extends Application {
 
         //Color pallete Drop down
         ComboBox colorPallete =new ComboBox();
-        colorPallete.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("fgfdgf");
-            }
-        });
+
+        handleComboBox(colorPallete);
         colorPallete.getStyleClass().add("combobox");
-        colorPallete.getItems().addAll("Rain","Rainbow","Ironbow","Fusion","Sepia","Color1","Color2","White Hot","Black Hot","Globow");
+        colorPallete.getItems().addAll("Fusion","Ironbow 1","Ironbow 2","Rainbow","Rain","Sepia","Glowbow","White Hot","Black Hot","Ice and Fire","Color 1","Color 2");
 
 
         //zoom  button
@@ -181,56 +194,69 @@ public class Main extends Application {
 
         //Temperature cursor
         Button temperatureCursorButton=new Button();
+        temperatureCursorButton.setTooltip(new Tooltip("Temperature Cursor"));
         Image temperatureCursorIcon=new Image("file:"+"Icons/cursor.png");
         temperatureCursorButton.setGraphic(new ImageView(temperatureCursorIcon));
 
 
         //Temperature Range Setting
         Button temperatureRangeButton=new Button();
+        handleTemperatureRange(temperatureRangeButton);
+        temperatureRangeButton.setTooltip(new Tooltip("Set Low and High Temperature"));
         Image temperatureRangeIcon =new Image("file:"+"Icons/tem_range.png");
         temperatureRangeButton.setGraphic(new ImageView(temperatureRangeIcon));
 
         //Label to show Temperature Unit
         Label temperatureUnitLabel=new Label();
+        temperatureUnitLabel.setTooltip(new Tooltip("Unit of Temperature"));
 
         //Label to show current low point of range
         Label lowPointLabel=new Label();
+        lowPointLabel.setTooltip(new Tooltip("Low Point of Temperature Range"));
 
         //label to show current temperature high point of range
         Label highPointLabel =new Label();
+        highPointLabel.setTooltip(new Tooltip("High Point of Temperature Range"));
 
         //Compare with visual image
         Button comapareButton =new Button();
+        comapareButton.setTooltip(new Tooltip("Compare with visual Image"));
         Image compareIcon =new Image("file:"+"Icons/compare.png");
         comapareButton.setGraphic(new ImageView(compareIcon));
 
         //Print Image
         Button printImageButton=new Button();
+        printImageButton.setTooltip(new Tooltip("Print Image"));
         Image printImageIcon=new Image("file:"+"Icons/print.png");
         printImageButton.setGraphic(new ImageView(printImageIcon));
 
         //Save Image
         Button saveImageButton =new Button();
+        saveImageButton.setTooltip(new Tooltip("Save Thermal Image"));
         Image saveImageIcon =new Image("file:"+"Icons/sava.png");
         saveImageButton.setGraphic(new ImageView(saveImageIcon));
 
         //Open Image
         Button openImageButton =new Button();
+        openImageButton.setTooltip(new Tooltip("Open Image"));
         Image openImageIcon =new Image("file:"+"Icons/open_image.png");
         openImageButton.setGraphic(new ImageView(openImageIcon));
 
         //Open Folder
         Button openFolderbutton=new Button();
+        openFolderbutton.setTooltip(new Tooltip("Open Folder of Images"));
         Image openFolderIcon =new Image("file:"+"Icons/open_image_folder.png");
         openFolderbutton.setGraphic(new ImageView(openImageIcon));
 
         //Copy Image
         Button copyImageButton =new Button();
+        copyImageButton.setTooltip(new Tooltip("Copy Image"));
         Image copyImageIcon =new Image("file:"+"Icons/copy.png");
         copyImageButton.setGraphic(new ImageView(copyImageIcon));
 
         //Properties
         Button propertiesButton=new Button();
+        propertiesButton.setTooltip(new Tooltip("Image Properties"));
         Image propertiesIcon =new Image("file:"+"Icons/info.png");
         propertiesButton.setGraphic(new ImageView(propertiesIcon));
 
@@ -333,5 +359,113 @@ public class Main extends Application {
                 sliderDisplay.show(root,Side.TOP,Values.SLIDER_DX,Values.SLIDER_DY);
             }
         });
+    }
+    private void handleTemperatureRange(Button button){
+        /*
+        This method handle when buuton is clicked it get low point,high point of temperature scale range
+        and Range of Interest  And  give of choice to user ues whtaever the unit from user
+        It has default values
+        Temperature Scale Range : 25 - 35 degree celcious
+        Interest range          :28   -32 degree celcious
+         */
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                final Stage dialog =new Stage();
+                stage.setTitle("Adjust Temperature Scale Setting");
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(stage);
+
+
+                GridPane grid =new GridPane();
+
+                Label selectUnit =new Label("Temperature Unit");
+
+                ComboBox <String> unitSelection =new ComboBox<String>();
+                unitSelection.getItems().addAll("Celcious","Frahneit","Kelvin");
+                unitSelection.getSelectionModel().selectFirst();
+
+
+                Label temperatureScale =new Label("Adjust Temperature Scale Range");
+
+                Label highPoint =new Label("High Temperature of Range");
+                Label lowPoint =new Label("Low Temperature of Range");
+
+                TextField highPointText =new TextField(Values.HIGH_TEM_SCALE_RANGE);
+                TextField lowPointText =new TextField(Values.LOW_TEM_SCALE_RANGE);
+
+                Label regionOfInterest =new Label("Region of Interset Temperature Scale");
+
+                Label highPointOfRegion =new Label("High Temperature");
+                Label lowPointOfRegion =new Label("Low Temperature ");
+
+                TextField highPointRegionText =new TextField(Values.HIGH_TEM_REGION);
+                TextField lowPonitRegionText =new TextField(Values.LOW_TEM_REGION);
+
+                Button setRanges =new Button("Apply");
+
+                setRanges.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        try{
+                            scaleTemMax=Double.parseDouble(highPointText.getText());
+                            scaleTemMin=Double.parseDouble(lowPointText.getText());
+                            interestRangeMax=Double.parseDouble(highPointRegionText.getText());
+                            interestRangeMin =Double.parseDouble(lowPonitRegionText.getText());
+                            unit=unitSelection.getSelectionModel().getSelectedIndex();
+                        }catch (NumberFormatException e){
+                            System.out.println(e);
+                        }
+                    }
+                });
+                Button reset =new Button("Reset");
+                reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        highPointRegionText.setText(Values.HIGH_TEM_REGION);
+                        lowPonitRegionText.setText(Values.LOW_TEM_REGION);
+                        highPointText.setText(Values.HIGH_TEM_SCALE_RANGE);
+                        lowPointText.setText(Values.LOW_TEM_SCALE_RANGE);
+                    }
+                });
+
+                grid.add(selectUnit,0,0);
+                grid.add(unitSelection,1,0);
+                grid.add(temperatureScale,0,1);
+                grid.add(highPoint,0,2);
+                grid.add(highPointText,1,2);
+                grid.add(lowPoint,0,3);
+                grid.add(lowPointText,1,3);
+                grid.add(regionOfInterest,0,4);
+                grid.add(highPointOfRegion,0,5);
+                grid.add(highPointRegionText,1,5);
+                grid.add(lowPointOfRegion,0,6);
+                grid.add(lowPonitRegionText,1,6);
+                grid.add(setRanges,0,7);
+                grid.add(reset,1,7);
+
+                grid.setVgap(Values.GRID_VGAP);
+                Scene dialogScene = new Scene(grid, 400, 400);
+                dialog.setScene(dialogScene);
+                dialog.show();
+
+            }
+        });
+    }
+    private void handleComboBox(ComboBox<String> comboBox){
+        //Default combobox selection is Fusion
+        comboBox.getSelectionModel().selectFirst();
+
+        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                 {
+                   colorPallete=comboBox.getSelectionModel().getSelectedIndex();
+                     System.out.println(colorPallete);
+                }
+            }
+        });
+
     }
 }
