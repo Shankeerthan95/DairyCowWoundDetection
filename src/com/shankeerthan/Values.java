@@ -38,7 +38,7 @@ public class Values {
     public static final int SIZE_RANGE_COLORS=200;
 
     /*
-    aLL VALES IN cELCIOUS
+    aLL VALES IN CELCIOUS
      */
     public static  final String HIGH_TEM_SCALE_RANGE="35";
     public static final String LOW_TEM_SCALE_RANGE="25";
