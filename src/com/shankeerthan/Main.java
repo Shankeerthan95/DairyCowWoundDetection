@@ -42,7 +42,7 @@ public class Main extends Application {
     private double interestRangeMin;
     private int unit;
     private int colorPallete;
-    private File fileProp;
+    
 
     public Main() {
         scaleTemMax = 35;
@@ -511,9 +511,7 @@ public class Main extends Application {
                 transition.setNode(vBox);
                 transition.setToX(50);
                 transition.play();
-
             }
-
 
         });
 
@@ -530,9 +528,7 @@ public class Main extends Application {
                 transition.setNode(vBox);
                 transition.setToX(0);
                 transition.play();
-
             }
-
 
         });
     }
@@ -543,14 +539,8 @@ public class Main extends Application {
             public void handle(MouseEvent event) {
                 //System.out.println("Show");
                 SupportCodes.printProp();
-
-
             }
-
-
         });
-
-
     }
 
 }
