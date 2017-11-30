@@ -21,10 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -253,6 +250,7 @@ public class Main extends Application {
 
         //Open Folder
         Button openFolderbutton=new Button();
+        handleImageFolder(openFolderbutton);
         openFolderbutton.setTooltip(new Tooltip("Open Folder of Images"));
         Image openFolderIcon =new Image("file:"+"Icons/open_image_folder.png");
         openFolderbutton.setGraphic(new ImageView(openImageIcon));
@@ -516,5 +514,43 @@ public class Main extends Application {
 
 
         } );
+    }
+
+    private void handleImageFolder(Button button){
+        /*
+        If Button is clicked it open DirectoryChooser
+         */
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                DirectoryChooser directoryChooser =new DirectoryChooser();
+                directoryChooser.setTitle("Open Image Folder");
+                File dir =directoryChooser.showDialog(stage);
+                File [] files =dir.listFiles();
+                if(files!=null){
+                    /*for(int count=0;count<files.length;count++){
+                        System.out.println(files[count].toStr
+                    }*/
+
+
+                   Runnable t= new ImagingThread(files,0,files.length,scaleTemMax,scaleTemMin,interestRangeMax,interestRangeMin,colorPallete,imageDisplay);
+                   Thread thread =new Thread(t);
+                   thread.start();
+                    /*try {
+                        //t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        System.out.println("");
+                    }*/
+
+
+                }else{
+                    //Check is a Directory
+                }
+
+
+            }
+        });
+
     }
 }
