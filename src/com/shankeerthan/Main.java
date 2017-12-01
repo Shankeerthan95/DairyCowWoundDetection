@@ -21,6 +21,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,7 +44,6 @@ public class Main extends Application {
     private double interestRangeMin;
     private int unit;
     private int colorPallete;
-    
 
     public Main() {
         scaleTemMax = 35;
@@ -60,15 +61,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Get reference of primaryStage to use in code further
-        stage = primaryStage;
+        stage=primaryStage;
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
         //Border Pane is root for this software
-        BorderPane root = new BorderPane();
+        BorderPane root =new BorderPane();
         root.getStyleClass().add("scene");
         root.getStylesheets().add("file:StyleSheet/style1.css");
         addNodesToRoot(root);
-        Scene imageScene = new Scene(root, Values.DEFAULT_SCENE_WIDTH, Values.DEFAULT_SCENE_HEIGHT);
+        Scene imageScene =new Scene(root,Values.DEFAULT_SCENE_WIDTH,Values.DEFAULT_SCENE_HEIGHT);
 
         //HAVE TO set tile with image name and app name set logo of the software
         styleStage(primaryStage);
@@ -76,7 +77,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void addNodesToRoot(BorderPane root) {
+    private void addNodesToRoot(BorderPane root){
         /*
         Center: Canvas contains imaged Thremal image and two left and right arrow to jump
                 previous and next image
@@ -89,92 +90,90 @@ public class Main extends Application {
         root.setCenter(imageDisplay);
 
         //Bottom
-        HBox imagePositionBox = new HBox();
+        HBox imagePositionBox =new HBox();
         imagePositionBox.setMinHeight(Values.IMAGE_POSITION_BOX_HEIGHT);
         designBottomBox(imagePositionBox);
         root.setBottom(imagePositionBox);
         //Right
-        VBox rightBox = new VBox();
+        VBox rightBox =new VBox();
         rightBox.setMinWidth(Values.RIGHT_BAR_WIDTH);
         designRightBox(rightBox);
         root.setRight(rightBox);
 
         //Top
-        HBox topBox = new HBox();
+        HBox topBox=new HBox();
         topBox.setMinHeight(Values.TOP_BAR_HEIGHT);
-        designTopBar(topBox, rightBox);
+        designTopBar(topBox,rightBox);
         root.setTop(topBox);
 
 
     }
-
-    private void styleStage(Stage stage) {
+    private void styleStage(Stage stage){
         stage.initStyle(StageStyle.DECORATED);
     }
-
-    private void designTopBar(HBox container, VBox vBox) {
+    private void designTopBar(HBox container , VBox vBox){
         //Menu button
-        Button smallMenuButton = new Button();
-        handleSmallMenuButton(smallMenuButton, container);
-        Image menuIcon = new Image("file:" + "Icons/menu.png");
-        ImageView menuIconView = new ImageView(menuIcon);
+        Button smallMenuButton =new Button();
+        handleSmallMenuButton(smallMenuButton,container);
+        Image menuIcon =new Image("file:"+"Icons/menu.png");
+        ImageView menuIconView =new ImageView(menuIcon);
         smallMenuButton.setGraphic(new ImageView(menuIcon));
 
         //Canvas to show name of the image
-        Canvas nameCanvas = new Canvas();
+        Canvas nameCanvas =new Canvas();
         nameCanvas.setWidth(Values.DEFAULT_NAME_CANVAS_WIDTH);
         nameCanvas.setHeight(Values.DEFAULT_TOP_BAR_NODES_HEIGHT);
 
         //Zoom Selecton Button
-        Button zoomSelectionButton = new Button();
-        handleZoomSelectionButton(zoomSelectionButton, container);
-        Image zoomSelectionIcon = new Image("file:" + "Icons/menu.png");
+        Button zoomSelectionButton=new Button();
+        handleZoomSelectionButton(zoomSelectionButton,container);
+        Image zoomSelectionIcon =new Image("file:"+"Icons/menu.png");
         zoomSelectionButton.setGraphic(new ImageView(zoomSelectionIcon));
 
         //Color pallete Drop down
-        ComboBox colorPallete = new ComboBox();
+        ComboBox colorPallete =new ComboBox();
 
         handleComboBox(colorPallete);
         colorPallete.getStyleClass().add("combobox");
-        colorPallete.getItems().addAll("Fusion", "Ironbow 1", "Ironbow 2", "Rainbow", "Rain", "Sepia", "Glowbow", "White Hot", "Black Hot", "Ice and Fire", "Color 1", "Color 2");
+        colorPallete.getItems().addAll("Fusion","Ironbow 1","Ironbow 2","Rainbow","Rain","Sepia","Glowbow","White Hot","Black Hot","Ice and Fire","Color 1","Color 2");
 
 
         //zoom  button
-        Button zoomButton = new Button();
-        Image zoomIcon = new Image("file:" + "Icons/zoom.png");
+        Button zoomButton =new Button();
+        Image zoomIcon =new Image("file:"+"Icons/zoom.png");
         zoomButton.setGraphic(new ImageView(zoomIcon));
 
         //Rotate left button
-        Button rotateLeftButton = new Button();
-        Image rotateLeftIcon = new Image("file:" + "Icons/rotate_left.png");
+        Button rotateLeftButton=new Button();
+        Image rotateLeftIcon =new Image("file:"+"Icons/rotate_left.png" );
         rotateLeftButton.setGraphic(new ImageView(rotateLeftIcon));
 
         //Rotate right button
-        Button rotateRightButton = new Button();
-        Image rotateRightIcon = new Image("file:" + "Icons/rotate_right.png");
+        Button rotateRightButton=new Button();
+        Image rotateRightIcon =new Image("file:"+"Icons/rotate_right.png");
         rotateRightButton.setGraphic(new ImageView(rotateRightIcon));
 
         //Crop button
-        Button cropButton = new Button();
-        Image cropImageIcon = new Image("file:" + "Icons/crop.png");
+        Button cropButton =new Button();
+        Image cropImageIcon=new Image("file:"+ "Icons/crop.png");
         cropButton.setGraphic(new ImageView(cropImageIcon));
 
         //ShowHide side bar  Button
-        Button showSidebarButton = new Button();
-        handleShowBarButton(showSidebarButton, vBox);
-        Image showSidebarIcon = new Image("file:" + "Icons/show_sidebar.png");
+        Button showSidebarButton =new Button();
+        handleShowBarButton(showSidebarButton , vBox);
+        Image showSidebarIcon=new Image("file:"+ "Icons/show_sidebar.png");
         showSidebarButton.setGraphic(new ImageView(showSidebarIcon));
 
 
         //Hide side bar button
-        Button hideSidebarButton = new Button();
-        handleHideBarButton(hideSidebarButton, vBox);
-        Image hideSidebarImageIcon = new Image("file:" + "Icons/hide_sidebar.png");
+        Button hideSidebarButton =new Button();
+        handleHideBarButton(hideSidebarButton,vBox);
+        Image hideSidebarImageIcon = new Image("file:"+"Icons/hide_sidebar.png");
         hideSidebarButton.setGraphic(new ImageView(hideSidebarImageIcon));
 
         //About us button
-        Button aboutUsButton = new Button();
-        Image aboutUsIcon = new Image("file:" + "Icons/about_us.png");
+        Button aboutUsButton= new Button();
+        Image aboutUsIcon =new Image("file:"+"Icons/about_us.png");
         aboutUsButton.setGraphic(new ImageView(aboutUsIcon));
 
 
@@ -193,79 +192,81 @@ public class Main extends Application {
     }
 
 
-    private void designBottomBox(HBox container) {
+
+    private void designBottomBox(HBox container){
         //It has a slider to show position of current image in particular directory
-        Slider positionShower = new Slider();
+        Slider positionShower =new Slider();
         positionShower.setOrientation(Orientation.HORIZONTAL);
         //sET slider to have width lesser than Stage widdth
-        positionShower.setPrefWidth(Values.DEFAULT_SCENE_WIDTH - Values.POSITION_SLIDER_OFFSET);
+        positionShower.setPrefWidth(Values.DEFAULT_SCENE_WIDTH-Values.POSITION_SLIDER_OFFSET);
 
         container.setPadding(new Insets(Values.POSITION_SLIDER_OFFSET));
         container.getChildren().add(positionShower);
     }
 
-    private void designRightBox(VBox container) {
+    private void designRightBox(VBox container){
 
         //Temperature cursor
-        Button temperatureCursorButton = new Button();
+        Button temperatureCursorButton=new Button();
         temperatureCursorButton.setTooltip(new Tooltip("Temperature Cursor"));
-        Image temperatureCursorIcon = new Image("file:" + "Icons/cursor.png");
+        Image temperatureCursorIcon=new Image("file:"+"Icons/cursor.png");
         temperatureCursorButton.setGraphic(new ImageView(temperatureCursorIcon));
 
 
         //Temperature Range Setting
-        Button temperatureRangeButton = new Button();
+        Button temperatureRangeButton=new Button();
         handleTemperatureRange(temperatureRangeButton);
         temperatureRangeButton.setTooltip(new Tooltip("Set Low and High Temperature"));
-        Image temperatureRangeIcon = new Image("file:" + "Icons/tem_range.png");
+        Image temperatureRangeIcon =new Image("file:"+"Icons/tem_range.png");
         temperatureRangeButton.setGraphic(new ImageView(temperatureRangeIcon));
 
         //Label to show Temperature Unit
-        Label temperatureUnitLabel = new Label();
+        Label temperatureUnitLabel=new Label();
         temperatureUnitLabel.setTooltip(new Tooltip("Unit of Temperature"));
 
         //Label to show current low point of range
-        Label lowPointLabel = new Label();
+        Label lowPointLabel=new Label();
         lowPointLabel.setTooltip(new Tooltip("Low Point of Temperature Range"));
 
         //label to show current temperature high point of range
-        Label highPointLabel = new Label();
+        Label highPointLabel =new Label();
         highPointLabel.setTooltip(new Tooltip("High Point of Temperature Range"));
 
         //Compare with visual image
-        Button comapareButton = new Button();
+        Button comapareButton =new Button();
         comapareButton.setTooltip(new Tooltip("Compare with visual Image"));
-        Image compareIcon = new Image("file:" + "Icons/compare.png");
+        Image compareIcon =new Image("file:"+"Icons/compare.png");
         comapareButton.setGraphic(new ImageView(compareIcon));
 
         //Print Image
-        Button printImageButton = new Button();
+        Button printImageButton=new Button();
         printImageButton.setTooltip(new Tooltip("Print Image"));
-        Image printImageIcon = new Image("file:" + "Icons/print.png");
+        Image printImageIcon=new Image("file:"+"Icons/print.png");
         printImageButton.setGraphic(new ImageView(printImageIcon));
 
         //Save Image
-        Button saveImageButton = new Button();
+        Button saveImageButton =new Button();
         saveImageButton.setTooltip(new Tooltip("Save Thermal Image"));
-        Image saveImageIcon = new Image("file:" + "Icons/sava.png");
+        Image saveImageIcon =new Image("file:"+"Icons/sava.png");
         saveImageButton.setGraphic(new ImageView(saveImageIcon));
 
         //Open Image
-        Button openImageButton = new Button();
+        Button openImageButton =new Button();
         openImageButton.setTooltip(new Tooltip("Open Image"));
-        Image openImageIcon = new Image("file:" + "Icons/open_image.png");
+        Image openImageIcon =new Image("file:"+"Icons/open_image.png");
         openImageButton.setGraphic(new ImageView(openImageIcon));
 
         //Open Folder
-        Button openFolderbutton = new Button();
+        Button openFolderbutton=new Button();
+        handleImageFolder(openFolderbutton);
         openFolderbutton.setTooltip(new Tooltip("Open Folder of Images"));
         Image openFolderIcon = new Image("file:" + "Icons/open_image_folder.png");
         openFolderbutton.setGraphic(new ImageView(openImageIcon));
 
         //Copy Image
-        Button copyImageButton = new Button();
+        Button copyImageButton =new Button();
         copyImageButton.setTooltip(new Tooltip("Copy Image"));
-        Image copyImageIcon = new Image("file:" + "Icons/copy.png");
+        Image copyImageIcon =new Image("file:"+"Icons/copy.png");
         copyImageButton.setGraphic(new ImageView(copyImageIcon));
 
         //Properties
@@ -511,7 +512,11 @@ public class Main extends Application {
                 transition.setNode(vBox);
                 transition.setToX(50);
                 transition.play();
+
             }
+
+
+
 
         });
 
@@ -541,6 +546,44 @@ public class Main extends Application {
                 SupportCodes.printProp();
             }
         });
+    }
+
+    private void handleImageFolder(Button button){
+        /*
+        If Button is clicked it open DirectoryChooser
+         */
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                DirectoryChooser directoryChooser =new DirectoryChooser();
+                directoryChooser.setTitle("Open Image Folder");
+                File dir =directoryChooser.showDialog(stage);
+                File [] files =dir.listFiles();
+                if(files!=null){
+                    /*for(int count=0;count<files.length;count++){
+                        System.out.println(files[count].toStr
+                    }*/
+
+
+                   Runnable t= new ImagingThread(files,0,files.length,scaleTemMax,scaleTemMin,interestRangeMax,interestRangeMin,colorPallete,imageDisplay);
+                   Thread thread =new Thread(t);
+                   thread.start();
+                    /*try {
+                        //t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        System.out.println("");
+                    }*/
+
+
+                }else{
+                    //Check is a Directory
+                }
+
+
+            }
+        });
+
     }
 
 }
