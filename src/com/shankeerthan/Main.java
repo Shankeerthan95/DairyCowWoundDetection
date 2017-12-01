@@ -21,15 +21,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.*;
-
 import javafx.util.Duration;
-import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -41,7 +37,6 @@ public class Main extends Application {
     private double interestRangeMin;
     private int unit;
     private int colorPallete;
-    
 
     public Main() {
         scaleTemMax = 35;
@@ -257,9 +252,8 @@ public class Main extends Application {
 
         //Open Folder
 
-        Button openFolderbutton=new Button();
+        Button openFolderbutton = new Button();
         handleImageFolder(openFolderbutton);
-
         openFolderbutton.setTooltip(new Tooltip("Open Folder of Images"));
         Image openFolderIcon = new Image("file:" + "Icons/open_image_folder.png");
         openFolderbutton.setGraphic(new ImageView(openImageIcon));
@@ -513,7 +507,9 @@ public class Main extends Application {
                 transition.setNode(vBox);
                 transition.setToX(50);
                 transition.play();
+
             }
+
 
         });
 
@@ -546,7 +542,7 @@ public class Main extends Application {
     }
 
 
-    private void handleImageFolder(Button button){
+    private void handleImageFolder(Button button) {
         /*
         If Button is clicked it open DirectoryChooser
          */
@@ -583,6 +579,5 @@ public class Main extends Application {
         });
 
     }
-=========
->>>>>>>>> Temporary merge branch 2
+
 }
