@@ -1,7 +1,8 @@
 <component name="libraryTable">
-  <library name="xmpcore-5.1.2">
+  <library name="lib">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/xmpcore-5.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/metadata-extractor-2.11.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
