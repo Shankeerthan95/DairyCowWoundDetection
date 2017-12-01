@@ -40,14 +40,14 @@ public class ColorSeparator {
     method return distance between two points in  3 dimensional
 
      */
-    public static double getDistance( double x1,double y1,double z1,double x2,double y2 ,double z2){
+    public static double getDistance(double x1, double y1, double z1, double x2, double y2, double z2) {
         double radius =Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2)+Math.pow((z1-z2),2));
         //System.out.println(radius);
         return radius;
     }
 
     protected void regionOfInterestDetector(Image image, Color color, double radius){
-        System.out.println("Image"+image);
+        System.out.println("Image" + image);
         for(int i=0;i<image.getWidth();i++){
             for(int j=0;j<image.getHeight();j++){
                 if(compareColors(image.getPixelReader().getColor(i,j),Color.WHITE,radius)){
