@@ -3,9 +3,7 @@ package com.shankeerthan;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.*;
 
 
 /*
@@ -13,14 +11,16 @@ This class contains static methods to proceesing color of each pixel in an image
 
  */
 public class ColorSeparator {
-    private   int regionsCount;
+    private static  int regionsCount;
     private ArrayList<Point> points;
     public ColorSeparator(){
         points =new ArrayList<Point>();
+
+    }
+    static {
         regionsCount=0;
 
     }
-
     public static boolean  compareColors(Color color1 ,Color color2,double radius){
         double color1_rValue= color1.getRed();
         double color1_bValue= color1.getBlue();
@@ -40,14 +40,13 @@ public class ColorSeparator {
     method return distance between two points in  3 dimensional
 
      */
-    public static double getDistance( double x1,double y1,double z1,double x2,double y2 ,double z2){
+    private static double getDistance( double x1,double y1,double z1,double x2,double y2 ,double z2){
         double radius =Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2)+Math.pow((z1-z2),2));
         //System.out.println(radius);
         return radius;
     }
 
     protected void regionOfInterestDetector(Image image, Color color, double radius){
-        System.out.println("Image"+image);
         for(int i=0;i<image.getWidth();i++){
             for(int j=0;j<image.getHeight();j++){
                 if(compareColors(image.getPixelReader().getColor(i,j),Color.WHITE,radius)){
