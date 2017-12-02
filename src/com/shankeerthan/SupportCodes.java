@@ -51,7 +51,8 @@ public class SupportCodes {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Image Properties");
             alert.setHeaderText(null);
-            alert.setContentText("Please Press below button for more details");
+            alert.setContentText(imgProperties.get(16) + "\n" + imgProperties.get(17) + "\n" + imgProperties.get(0) + "\n" + imgProperties.get(1) +
+                    "\n" + "\n" + "Please Press below button for more details");
 
 
             Label label = new Label("Properties of Inserted Image :");

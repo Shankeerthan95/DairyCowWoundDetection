@@ -203,16 +203,16 @@ public class Main extends Application {
         //Temperature cursor
         Button temperatureCursorButton = new Button();
         temperatureCursorButton.setTooltip(new Tooltip("Temperature Cursor"));
-        Image temperatureCursorIcon = new Image("file:" + "Icons/cursor.png");
-        temperatureCursorButton.setGraphic(new ImageView(temperatureCursorIcon));
+//        Image temperatureCursorIcon = new Image("file:" + "Icons/cursor.png");
+//        temperatureCursorButton.setGraphic(new ImageView(temperatureCursorIcon));
 
 
         //Temperature Range Setting
         Button temperatureRangeButton = new Button();
         handleTemperatureRange(temperatureRangeButton);
         temperatureRangeButton.setTooltip(new Tooltip("Set Low and High Temperature"));
-        Image temperatureRangeIcon = new Image("file:" + "Icons/tem_range.png");
-        temperatureRangeButton.setGraphic(new ImageView(temperatureRangeIcon));
+//        Image temperatureRangeIcon = new Image("file:" + "Icons/tem_range.png");
+//       temperatureRangeButton.setGraphic(new ImageView(temperatureRangeIcon));
 
         //Label to show Temperature Unit
         Label temperatureUnitLabel = new Label();
@@ -229,47 +229,52 @@ public class Main extends Application {
         //Compare with visual image
         Button comapareButton = new Button();
         comapareButton.setTooltip(new Tooltip("Compare with visual Image"));
-        Image compareIcon = new Image("file:" + "Icons/compare.png");
-        comapareButton.setGraphic(new ImageView(compareIcon));
+//        Image compareIcon = new Image("file:" + "Icons/compare.png");
+//        comapareButton.setGraphic(new ImageView(compareIcon));
 
         //Print Image
         Button printImageButton = new Button();
         printImageButton.setTooltip(new Tooltip("Print Image"));
-        Image printImageIcon = new Image("file:" + "Icons/print.png");
-        printImageButton.setGraphic(new ImageView(printImageIcon));
+        // Image printImageIcon = new Image("file:" + "Icons/print.png");
+        //printImageButton.setGraphic(new ImageView(printImageIcon));
 
         //Save Image
         Button saveImageButton = new Button();
         saveImageButton.setTooltip(new Tooltip("Save Thermal Image"));
-        Image saveImageIcon = new Image("file:" + "Icons/sava.png");
-        saveImageButton.setGraphic(new ImageView(saveImageIcon));
+//        Image saveImageIcon = new Image("file:" + "Icons/sava.png");
+//        saveImageButton.setGraphic(new ImageView(saveImageIcon));
 
         //Open Image
         Button openImageButton = new Button();
         openImageButton.setTooltip(new Tooltip("Open Image"));
-        Image openImageIcon = new Image("file:" + "Icons/open_image.png");
-        openImageButton.setGraphic(new ImageView(openImageIcon));
+//        Image openImageIcon = new Image("file:" + "Icons/open_image.png");
+//        openImageButton.setGraphic(new ImageView(openImageIcon));
 
         //Open Folder
 
         Button openFolderbutton = new Button();
         handleImageFolder(openFolderbutton);
         openFolderbutton.setTooltip(new Tooltip("Open Folder of Images"));
-        Image openFolderIcon = new Image("file:" + "Icons/open_image_folder.png");
-        openFolderbutton.setGraphic(new ImageView(openImageIcon));
+//        Image openFolderIcon = new Image("file:" + "Icons/open_image_folder.png");
+//        openFolderbutton.setGraphic(new ImageView(openFolderIcon));
 
         //Copy Image
         Button copyImageButton = new Button();
         copyImageButton.setTooltip(new Tooltip("Copy Image"));
-        Image copyImageIcon = new Image("file:" + "Icons/copy.png");
-        copyImageButton.setGraphic(new ImageView(copyImageIcon));
+//        Image copyImageIcon = new Image("file:" + "Icons/copy.png");
+//        copyImageButton.setGraphic(new ImageView(copyImageIcon));
 
         //Properties
         Button propertiesButton = new Button();
+        // propertiesButton.setMaxSize(32,32);
         handlePropertiesButton(propertiesButton);
         propertiesButton.setTooltip(new Tooltip("Image Properties"));
-        Image propertiesIcon = new Image("file:" + "Icons/info.png");
-        propertiesButton.setGraphic(new ImageView(propertiesIcon));
+//        Image propertiesIcon = new Image("file:" + "NewIcons/info.png");
+//        propertiesButton.setGraphic(new ImageView(propertiesIcon));
+
+        // add Zoom effect for the VBox
+        ZoomingEffect.addZoomEffect(temperatureCursorButton, temperatureRangeButton, comapareButton, printImageButton, saveImageButton,
+                openImageButton, openFolderbutton, copyImageButton, propertiesButton, container);
 
         container.setSpacing(Values.SIDE_BOX_SPACING);
         container.setPadding(new Insets(Values.SIDE_BOX_PADDING_TOP_BOTTOM, 0, 0, 0));

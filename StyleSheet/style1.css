@@ -12,15 +12,15 @@
     -fx-border-radius: 5;
 }
 .button:pressed{
-    -fx-background-color: rgba(180,180,180,0.7);
+    -fx-background-color: #111111;
 }
 
 .button:hover{
-    -fx-background-color: rgba(235,235,235,0.7);
+    -fx-background-color: transparent;
 }
 
 .button:focused{
-    -fx-background-color: rgba(205,205,205,0.7);
+    -fx-background-color: transparent;
 }
 
 .vbox,hbox{
