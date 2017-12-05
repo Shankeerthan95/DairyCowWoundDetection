@@ -30,7 +30,7 @@ public class ZoomingEffect {
         setImageView(saveImageButton, "NewIcons/sava.png", vBox);
         setImageView(openImageButton, "NewIcons/open_image.png", vBox);
         setImageView(copyImageButton, "NewIcons/copy.png", vBox);
-        setImageView(openFolderbutton, "NewIcons/open_image_folder.png", vBox);
+        setImageView(openFolderbutton, "NewIcons/open_image_folder1.png", vBox);
         setImageView(propertiesButton, "NewIcons/info.png", vBox);
 
 
@@ -94,6 +94,26 @@ public class ZoomingEffect {
 
             }
         });
+
+        button.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), button);
+                scaleTransition.setToX(1);
+                scaleTransition.setToY(1);
+                scaleTransition.setAutoReverse(true);
+                scaleTransition.play();
+
+//                ScaleTransition scaleTransition2 = new ScaleTransition(Duration.millis(50), button);
+//                scaleTransition2.setToX(2.5);
+//                scaleTransition2.setToY(2.5);
+//                scaleTransition2.setAutoReverse(true);
+//                scaleTransition2.play();
+
+            }
+        });
+
+
     }
 
     private static void setImageView(Button button, String url, VBox vBox) {

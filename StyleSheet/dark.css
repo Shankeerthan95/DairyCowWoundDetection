@@ -1,4 +1,9 @@
 
+.context-menu {
+  -fx-background-color: #006699;
+  -fx-text-fill: white;
+}
+
 .scene{
     -fx-background-color: #333333;
 

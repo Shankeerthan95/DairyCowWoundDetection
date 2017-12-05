@@ -1,7 +1,9 @@
 package com.shankeerthan;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -46,11 +48,11 @@ public class ColorSeparator {
         return radius;
     }
 
-    protected void regionOfInterestDetector(Image image, Color color, double radius){
-        System.out.println("Image" + image);
+    protected int regionOfInterestDetector(Image image, Color color, double radius) {
+        //System.out.println("Image"+image);
         for(int i=0;i<image.getWidth();i++){
             for(int j=0;j<image.getHeight();j++){
-                if(compareColors(image.getPixelReader().getColor(i,j),Color.WHITE,radius)){
+                if (compareColors(image.getPixelReader().getColor(i, j), color, radius)) {
                     if(points.isEmpty()){
                         regionsCount++;
                         points.add(new Point(i,j,regionsCount));
@@ -60,8 +62,8 @@ public class ColorSeparator {
                         ListIterator<Point> iterator =points.listIterator();
                         boolean isInExistingRegion=false;
                         while(iterator.hasNext()){
-                             point =iterator.next();
-                             regionNumber=pointRegionFinder(point,i,j);
+                            point = iterator.next();
+                            regionNumber = pointRegionFinder(point, i, j);
                             if(regionNumber!=0){
                                 isInExistingRegion=true;
                                 points.add(new Point(i,j,regionNumber));
@@ -69,7 +71,7 @@ public class ColorSeparator {
                             }
                         }
                         if(!isInExistingRegion){
-                            System.out.println(regionsCount);
+                            //System.out.println(regionsCount);
                             regionsCount++;
                             points.add(new Point(i,j,regionsCount));
                         }
@@ -77,19 +79,33 @@ public class ColorSeparator {
                 }
             }
         }
-
+        return regionsCount;
     }
-    protected void edgeMarker(GraphicsContext graphicsContext,Color color){
+
+    protected Image edgeMarker(Image image, Color color, int width, int height) {
         ListIterator<Point> listIterator =points.listIterator();
         Point point;
-        while(listIterator.hasNext()){
-            point=listIterator.next();
-            graphicsContext.setStroke(color);
-            graphicsContext.strokeOval(point.getX(),point.getY(),.5,.5);
+
+        WritableImage writableImage = new WritableImage(width - 30, height - 30);
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+        Color color1;
+        PixelReader pixelReader = image.getPixelReader();
+        for (int i = 0; i < width - 30; i++) {
+            for (int j = 0; j < height - 30; j++) {
+                color1 = image.getPixelReader().getColor(i, j);
+                pixelWriter.setColor(i, j, color1);
+            }
+        }//Image Writing is finisshed
+        while (listIterator.hasNext()) {
+            point = listIterator.next();
+            try {
+                pixelWriter.setColor(point.getX(), point.getY(), color);
+            } catch (IndexOutOfBoundsException e) {
+
+            }
+
         }
-
-
-
+        return writableImage;
     }
 
     private int  pointRegionFinder(Point point,int x,int y){

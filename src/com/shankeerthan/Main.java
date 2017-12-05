@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -16,15 +17,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.net.MalformedURLException;
 
 
@@ -37,6 +36,12 @@ public class Main extends Application {
     private double interestRangeMin;
     private int unit;
     private int colorPallete;
+    protected static Image[] images;     //++++++++++++++++++++++++++++++++++++changed
+    protected static int[] imagesCheck;  //++++++++++++++++++++++++++++++++++++++changed
+    private BorderPane root;
+    private ProgressBar progressBar;//++++++++++++++++++++++++++++changed
+    private ImageView imageView;  //++++++++++++++++++++++++++++++++changed
+
 
     public Main() {
         scaleTemMax = 35;
@@ -44,7 +49,7 @@ public class Main extends Application {
         interestRangeMax = 32;
         interestRangeMin = 28;
         unit = Values.CELSIUS;
-        colorPallete = Values.FUSION;
+        colorPallete = Values.IRON;
 
         imageDisplay = new Canvas(); //HAVE TO handle initial size of canvas later point
         imageDisplay.getStyleClass().add("imagecanvas");
@@ -56,17 +61,25 @@ public class Main extends Application {
         //Get reference of primaryStage to use in code further
         stage = primaryStage;
         primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.getIcons().add(new Image("file:NewIcons/main64.png"));
+        primaryStage.setTitle("Smart Finder");
+
 
         //Border Pane is root for this software
         BorderPane root = new BorderPane();
         root.getStyleClass().add("scene");
-        root.getStylesheets().add("file:StyleSheet/style1.css");
+        //   Theme.themeMenu(root);
+        root.getStylesheets().add("file:StyleSheet/dark.css");
+        //root.getStylesheets().add("file:StyleSheet/whiteTheme.css");
+
         addNodesToRoot(root);
         Scene imageScene = new Scene(root, Values.DEFAULT_SCENE_WIDTH, Values.DEFAULT_SCENE_HEIGHT);
 
         //HAVE TO set tile with image name and app name set logo of the software
         styleStage(primaryStage);
         primaryStage.setScene(imageScene);
+
+
         primaryStage.show();
     }
 
@@ -96,7 +109,7 @@ public class Main extends Application {
         //Top
         HBox topBox = new HBox();
         topBox.setMinHeight(Values.TOP_BAR_HEIGHT);
-        designTopBar(topBox, rightBox);
+        designTopBar(topBox, rightBox, root);
         root.setTop(topBox);
 
 
@@ -106,12 +119,12 @@ public class Main extends Application {
         stage.initStyle(StageStyle.DECORATED);
     }
 
-    private void designTopBar(HBox container, VBox vBox) {
+    private void designTopBar(HBox container, VBox vBox, BorderPane pane) {
         //Menu button
         Button smallMenuButton = new Button();
-        handleSmallMenuButton(smallMenuButton, container);
+        handleSmallMenuButton(smallMenuButton, container, pane);
         Image menuIcon = new Image("file:" + "Icons/menu.png");
-        ImageView menuIconView = new ImageView(menuIcon);
+        //   ImageView menuIconView = new ImageView(menuIcon);
         smallMenuButton.setGraphic(new ImageView(menuIcon));
 
         //Canvas to show name of the image
@@ -189,13 +202,21 @@ public class Main extends Application {
 
     private void designBottomBox(HBox container) {
         //It has a slider to show position of current image in particular directory
-        Slider positionShower = new Slider();
-        positionShower.setOrientation(Orientation.HORIZONTAL);
-        //sET slider to have width lesser than Stage widdth
-        positionShower.setPrefWidth(Values.DEFAULT_SCENE_WIDTH - Values.POSITION_SLIDER_OFFSET);
+        Region region1 = new Region();
+        HBox.setHgrow(region1, Priority.ALWAYS);
 
+        Region region2 = new Region();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+
+
+        progressBar = new ProgressBar();
+        progressBar.getStyleClass().add("progressbar");
+        HBox.setHgrow(progressBar, Priority.ALWAYS);
+        progressBar.setVisible(false);
         container.setPadding(new Insets(Values.POSITION_SLIDER_OFFSET));
-        container.getChildren().add(positionShower);
+        container.getChildren().addAll(region1, progressBar, region2);
+
+
     }
 
     private void designRightBox(VBox container) {
@@ -206,6 +227,25 @@ public class Main extends Application {
 //        Image temperatureCursorIcon = new Image("file:" + "Icons/cursor.png");
 //        temperatureCursorButton.setGraphic(new ImageView(temperatureCursorIcon));
 
+        Label temperatureUnitLabel = new Label("C");//------------------------Changed
+        temperatureUnitLabel.getStyleClass().add("label1");
+        temperatureUnitLabel.setTooltip(new Tooltip("Unit of Temperature"));
+
+        //Label to show current low point of range
+        Label lowPointLabel = new Label(Values.LOW_TEM_REGION);  //++++++++++++++++++++++++++++++++++++changed
+        lowPointLabel.getStyleClass().add("label1");            //+++++++++++++++++++++++++++
+        lowPointLabel.setTooltip(new Tooltip("Low Point of Temperature Range"));
+
+        //label to show current temperature high point of range
+        Label highPointLabel = new Label(Values.HIGH_TEM_REGION);     //++++++++++++++++++++++changed
+        highPointLabel.getStyleClass().add("label1");       //++++++++++++++++++++++++++++++changed
+        highPointLabel.setTooltip(new Tooltip("High Point of Temperature Range"));
+
+
+
+
+
+
 
         //Temperature Range Setting
         Button temperatureRangeButton = new Button();
@@ -214,17 +254,6 @@ public class Main extends Application {
 //        Image temperatureRangeIcon = new Image("file:" + "Icons/tem_range.png");
 //       temperatureRangeButton.setGraphic(new ImageView(temperatureRangeIcon));
 
-        //Label to show Temperature Unit
-        Label temperatureUnitLabel = new Label();
-        temperatureUnitLabel.setTooltip(new Tooltip("Unit of Temperature"));
-
-        //Label to show current low point of range
-        Label lowPointLabel = new Label();
-        lowPointLabel.setTooltip(new Tooltip("Low Point of Temperature Range"));
-
-        //label to show current temperature high point of range
-        Label highPointLabel = new Label();
-        highPointLabel.setTooltip(new Tooltip("High Point of Temperature Range"));
 
         //Compare with visual image
         Button comapareButton = new Button();
@@ -260,6 +289,7 @@ public class Main extends Application {
 
         //Copy Image
         Button copyImageButton = new Button();
+//        handleCopyImage(copyImageButton);
         copyImageButton.setTooltip(new Tooltip("Copy Image"));
 //        Image copyImageIcon = new Image("file:" + "Icons/copy.png");
 //        copyImageButton.setGraphic(new ImageView(copyImageIcon));
@@ -295,7 +325,7 @@ public class Main extends Application {
     }
 
 
-    private void handleSmallMenuButton(Button button, Node root) {
+    private void handleSmallMenuButton(Button button, Node root, BorderPane pane) {
         /*
         If this button is clicked show a Context
         menu with some options
@@ -307,9 +337,14 @@ public class Main extends Application {
                 MenuItem loadMenuItem = new MenuItem("Load......");//Load image from pictures directory
                 MenuItem saveMenuItem = new MenuItem("Save......");//Save showing image in current directoty
                 MenuItem openMenuItem = new MenuItem("Open......");//Open an image from user Selection
+                MenuItem openTheme = new MenuItem("Themes");//Set Different Themes
 
-                contextMenu.getItems().addAll(loadMenuItem, saveMenuItem, openMenuItem);
+                contextMenu.getItems().addAll(loadMenuItem, saveMenuItem, openMenuItem, openTheme);
                 contextMenu.show(root, Side.TOP, Values.SMALL_MENU_DX, Values.SMALL_MENU_DY);
+
+                openTheme.setOnAction(event1 -> {
+                    Theme.themeMenu(pane);
+                });
 
                 loadMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -347,7 +382,7 @@ public class Main extends Application {
                                     public void run() {
                                         ColorSeparator colorSeparator = new ColorSeparator();
                                         colorSeparator.regionOfInterestDetector(image, Color.WHITE, .1);
-                                        colorSeparator.edgeMarker(imageDisplay.getGraphicsContext2D(), Color.RED);
+                                        colorSeparator.edgeMarker(image, Color.RED, (int) image.getWidth(), (int) image.getHeight());
                                     }
                                 });
                                 imagingThread.start();
@@ -502,6 +537,7 @@ public class Main extends Application {
 
     }
 
+
     private void handleHideBarButton(Button button, VBox vBox) {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -531,6 +567,7 @@ public class Main extends Application {
                 transition.setNode(vBox);
                 transition.setToX(0);
                 transition.play();
+
             }
 
         });
@@ -546,7 +583,6 @@ public class Main extends Application {
         });
     }
 
-
     private void handleImageFolder(Button button) {
         /*
         If Button is clicked it open DirectoryChooser
@@ -554,29 +590,88 @@ public class Main extends Application {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                //++++++++++++++++++++++++++++++++++++++++++changed
+
+
                 DirectoryChooser directoryChooser =new DirectoryChooser();
                 directoryChooser.setTitle("Open Image Folder");
                 File dir =directoryChooser.showDialog(stage);
-                File [] files =dir.listFiles();
-                if(files!=null){
-                    /*for(int count=0;count<files.length;count++){
-                        System.out.println(files[count].toStr
-                    }*/
 
 
-                   Runnable t= new ImagingThread(files,0,files.length,scaleTemMax,scaleTemMin,interestRangeMax,interestRangeMin,colorPallete,imageDisplay);
-                   Thread thread =new Thread(t);
-                   thread.start();
-                    /*try {
-                        //t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        System.out.println("");
-                    }*/
+                try {
+                    File file;
+                    File[] files = dir.listFiles(new FileFilter() {
+                        @Override
+                        public boolean accept(File pathname) {
+                            String fileName = pathname.getName().toLowerCase();
+                            return (fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith("jpeg")) && pathname.isFile();
+                        }
+                    });
+
+                    if (files.length == 0) {
+                        Label label = new Label("No Images are available in Selected Directory");
+                        root.setCenter(label);
+                    } else {
+                        //First set center Canvas
+                        root.setCenter(imageDisplay);
+                        //progressBar.setVisible(true);
+                        //progressBar.setProgress(0);
+
+                        images = new Image[files.length];
+                        imagesCheck = new int[files.length];
+
+                        file = new File(dir, "Detected" + Long.toString(System.currentTimeMillis()));
+                        file.mkdirs();
+                        //root.setCenter(new Label("Detecting Wounds"));
 
 
-                }else{
-                    //Check is a Directory
+                        //data  =new PicData[files.length];           //Handle .jpg .txt files,
+
+                        final Thread thread1 = new ImagingThread(files, 0, files.length / 4, scaleTemMax, scaleTemMin, interestRangeMax, interestRangeMin, colorPallete, file, imageDisplay);
+                        final Thread thread2 = new ImagingThread(files, files.length / 4, files.length / 2, scaleTemMax, scaleTemMin, interestRangeMax, interestRangeMin, colorPallete, file, imageDisplay);
+                        final Thread thread3 = new ImagingThread(files, files.length / 2, 3 * files.length / 4, scaleTemMax, scaleTemMin, interestRangeMax, interestRangeMin, colorPallete, file, imageDisplay);
+                        final Thread thread4 = new ImagingThread(files, files.length * 3 / 4, files.length, scaleTemMax, scaleTemMin, interestRangeMax, interestRangeMin, colorPallete, file, imageDisplay);
+                        thread1.start();
+                        thread2.start();
+                        thread3.start();
+                        thread4.start();
+
+                        //Check wheather all threads finished their jobs and update progress Bar
+                        int count = 0;
+                        while (true) {
+                            count = 0;
+
+                            //progressBar.setVisible(true);
+                            System.out.println(imagesCheck[0]);
+                            for (int i = 0; i < imagesCheck.length; i++) {
+
+                                count = count + imagesCheck[i];
+                            }
+
+                            if (count == imagesCheck.length) {
+                                break;
+                            }
+
+                        }
+                        root.setCenter(setImageView());
+                        //progressBar.setVisible(true);
+                            /*//progressBar.setProgress(count/images.length);
+                            try {
+                                //imageDisplay.setHeight(images[count].getHeight());
+                                //imageDisplay.setWidth(images[count].getWidth());
+                                //imageDisplay.getGraphicsContext2D().drawImage(images[count],0,0);
+                            }catch (IndexOutOfBoundsException e){
+
+                            }catch (Exception e){
+                                System.out.println(e);
+                            }
+                            if(count==images.length) break;*/
+
+                    }
+
+
+                } catch (NullPointerException e) {
+
                 }
 
 
@@ -584,5 +679,77 @@ public class Main extends Application {
         });
 
     }
+
+    private HBox setImageView() {
+        HBox container = new HBox();
+
+        imageView = new ImageView(images[0]);
+        VBox box1 = new VBox();
+        Region region3 = new Region();
+        Region region4 = new Region();
+        VBox.setVgrow(region3, Priority.ALWAYS);
+        VBox.setVgrow(region4, Priority.ALWAYS);
+        box1.getChildren().addAll(region3, imageView, region4);
+
+        Button left = new Button("left");
+        left.getStyleClass().add("button");
+        VBox box2 = new VBox();
+        Region region5 = new Region();
+        Region region6 = new Region();
+        VBox.setVgrow(region5, Priority.ALWAYS);
+        VBox.setVgrow(region6, Priority.ALWAYS);
+        box2.getChildren().addAll(region5, left, region6);
+
+
+        Button right = new Button("right");
+
+        right.getStyleClass().add("button");
+        VBox box3 = new VBox();
+        Region region7 = new Region();
+        Region region8 = new Region();
+        VBox.setVgrow(region7, Priority.ALWAYS);
+        VBox.setVgrow(region8, Priority.ALWAYS);
+        box3.getChildren().addAll(region7, right, region8);
+
+
+        Region region1 = new Region();
+        Region region2 = new Region();
+
+        HBox.setHgrow(region1, Priority.ALWAYS);
+        HBox.setHgrow(region2, Priority.ALWAYS);
+        left.setAlignment(Pos.CENTER_LEFT);
+        right.setAlignment(Pos.CENTER_RIGHT);
+        container.getChildren().addAll(box2, region1, box1, region2, box3);
+
+        EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
+            int count = 0;
+
+            @Override
+            public void handle(MouseEvent event) {
+
+                if (event.getSource().equals(left)) {
+                    if (count == 0) {
+                        count = images.length - 1;
+                    }
+                    count--;
+                    imageView.setImage(images[count]);
+                    //System.out.println("left");
+                } else if (event.getSource().equals(right)) {
+                    if (count == images.length - 1) {
+                        count = 0;
+                    }
+                    count++;
+                    imageView.setImage(images[count]);
+                    //System.out.println("right");
+                }
+            }
+
+        };
+        left.setOnMouseClicked(handler);
+        right.setOnMouseClicked(handler);
+
+        return container;
+    }
+
 
 }

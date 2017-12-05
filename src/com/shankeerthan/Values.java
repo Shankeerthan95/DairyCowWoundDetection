@@ -4,6 +4,7 @@ public class Values {
     public static final  double IMAGE_POSITION_BOX_HEIGHT=40;
     public static final double TOP_BAR_HEIGHT=20;
     public final static double RIGHT_BAR_WIDTH=20;
+
     public static final double DEFAULT_SCENE_HEIGHT=950;
     public static final double DEFAULT_SCENE_WIDTH=1000;
     public static final double DEFAULT_NAME_CANVAS_WIDTH=400;
@@ -23,20 +24,15 @@ public class Values {
     /*
     These number s sre used to Define Color palletes
      */
-    public static final int FUSION=0;
-    public static final int IRONBOW_1=1;
-    public static final int IRONBOW_2=2;
-    public static final int RAINBOW=3;
-    public static final int RAIN=4;
-    public static final int SEPIA=5;
-    public static final int GLOWBOW=6;
-    public static final int WHITE_HOT=7;
-    public static final int BLACK_HOT=8;
-    public static final int ICE_AND_FIRE=9;
-    public static final int COLOR_1=10;
-    public static final int COLOR_2=11;
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++changed
+    public static final int IRON = 0;
+    public static final int LAVA = 1;
+    public static final int ARCTIC = 2;
+    public static final int GRAY = 3;
+    public static final int RAINBOW = 4;
+    public static final int RAINBOW_HC = 5;
     public static final int SIZE_RANGE_COLORS=200;
-
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++changed
     /*
     aLL VALES IN CELCIOUS
      */
